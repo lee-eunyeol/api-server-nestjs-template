@@ -1,4 +1,5 @@
 export enum ERROR_CODE {
+  VALIDATION_FAIL_ERROR = 'E1000',
   ALREADY_EXIST = 'E2000',
   NOT_FOUND = 'E4000',
   NOT_FOUND_PATH = 'E4003',
@@ -9,3 +10,5 @@ export enum ERROR_CODE {
   TIMEOUT = 'E8000',
   TASK_FAIL_ERROR = 'E9000',
 }
+
+export enum ERROR_CODE_DESCRIPTION {}
