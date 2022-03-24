@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 //import { version } from '../package.json';
 
 export function setupSwagger(app: INestApplication): void {
+  if (process.env.NODE_ENV === 'production') return;
   const options = new DocumentBuilder()
     .setTitle('Nest API')
     .setDescription('관리자 api documentation 입니다.')

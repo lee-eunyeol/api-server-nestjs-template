@@ -13,6 +13,10 @@ export class ConfigShared {
     PORT: this.getString('PORT'),
   };
 
+  SESSION = {
+    SECRET_KEY: this.getString('SESSION_SECRET_KEY'),
+  };
+
   private getNumber(key: string): number {
     const value = this.get(key);
     try {
