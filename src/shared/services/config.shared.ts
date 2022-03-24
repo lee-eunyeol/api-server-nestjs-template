@@ -17,6 +17,14 @@ export class ConfigShared {
     SECRET_KEY: this.getString('SESSION_SECRET_KEY'),
   };
 
+  JWT = {
+    ACCESS_TOKEN_SECRET: this.getString('JWT_SECRET'),
+    REFRESH_TOKEN_SECRET: this.getString('JWT_SECRET_REFRESH'),
+    ACCESS_TOKEN_EXPIRE_DATE: this.getString('JWT_ACCESS_TOKEN_EXPIRE_DATE'),
+    REFRESH_TOKEN_EXPIRE_DATE: this.getString('JWT_REFRESH_TOKEN_EXPIRE_DATE'),
+    JWT_ISS: this.getString('JWT_ISS'),
+  };
+
   private getNumber(key: string): number {
     const value = this.get(key);
     try {
