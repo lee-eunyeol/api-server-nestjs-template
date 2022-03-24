@@ -1,8 +1,8 @@
 {
   "name": "nest-template",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "nestjs-default-template",
+  "author": "lee-eunyeol",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -10,11 +10,11 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:dev": "NODE_ENV=development nest start --watch",
+    "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "NODE_ENV=test jest --detectOpenHandles --force-exit",
+    "test:db": "NODE_ENV=test ERR_LOGGING=true DB_LOGGING=true jest --detectOpenHandles --force-exit",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -84,6 +84,13 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "moduleNameMapper": {
+      "src/(.*)$": "<rootDir>/../src/$1",
+      "@common/(.*)$": "<rootDir>/../src/common/$1",
+      "@entity/(.*)$": "<rootDir>/../src/entities/$1",
+      "@shared/(.*)$": "<rootDir>/../src/shared/services/$1",
+      "@repo/(.*)$": "<rootDir>/../src/repositories/$1"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
