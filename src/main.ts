@@ -20,7 +20,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   setupPm2(app);
-  setupSession(app);
+  setupSeverEnvironment(app);
   setupValidationPipe(app);
   setupInterceptor(app);
   setupSwagger(app);
@@ -28,7 +28,20 @@ async function bootstrap() {
   await startServer(app);
 }
 
-const setupSession = (app: NestExpressApplication) => {
+const setupSeverEnvironment = (app: NestExpressApplication) => {
+  app.setGlobalPrefix('api');
+  //프록시 이용했을때
+  app.enable('trust proxy');
+
+  //http 해더 보안취약점 보호
+  app.use(helmet());
+  //CORS활성화
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
   /*
    * 참고 이 옵션이 로 설정되어 true있지만 saveUninitialized옵션이 로 설정 false되어 있으면 초기화되지 않은 세션이 있는 응답에 쿠키가 설정되지 않습니다.
    * 이 옵션은 요청에 대해 기존 세션이 로드된 경우에만 동작을 수정합니다.
@@ -119,20 +132,7 @@ const setupPm2 = (app: NestExpressApplication) => {
 
 const startServer = async (app: NestExpressApplication) => {
   const config = app.select(SharedModule).get(ConfigShared);
-  //프록시 이용했을때
-  app.enable('trust proxy');
 
-  //http 해더 보안취약점 보호
-  app.use(helmet());
-  //CORS활성화
-  app.use(
-    cors({
-      origin: true,
-      credentials: true,
-    })
-  );
-
-  app.setGlobalPrefix('api');
   await app.listen(config.APP.PORT);
   if (process.send) {
     console.info('[Process Ready] to pm2');
