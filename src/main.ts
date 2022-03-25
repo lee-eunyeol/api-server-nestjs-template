@@ -75,25 +75,24 @@ const setupValidationPipe = (app: NestExpressApplication) => {
 
 const handleUnexpectedError = () => {
   process
-    .on('unhandledRejection', (reason: string) => {
+    .on('unhandledRejection', (reason: Error) => {
       const responseData: BaseResponseDto = new BaseResponseDto();
       responseData.result = false;
       responseData.resultData = 'unhandledRejection';
       responseData.errorCode = ERROR_CODE.SERVER_ERROR;
-      responseData.errorMessage = reason;
-
-      console.error(`[Unhandled Rejection at Promise]! ${JSON.stringify(reason)}`, '');
+      responseData.errorMessage = `[Unhandled Rejection at Promise]! ${reason.name} : ${reason.message}`;
+      console.error(`[Unhandled Rejection at Promise]! ${reason.name} : ${reason.message}`, reason.stack);
 
       sendErrorWebHook(responseData);
     })
-    .on('uncaughtException', (error) => {
+    .on('uncaughtException', (error: Error) => {
       const responseData: BaseResponseDto = new BaseResponseDto();
       responseData.result = false;
       responseData.resultData = error.message;
       responseData.errorCode = ERROR_CODE.SERVER_ERROR;
-      responseData.errorMessage = `STACK : ${error.stack}`;
+      responseData.errorMessage = `[uncaughtException]!$ ${error.name} : ${error.message}`;
 
-      console.error(`[uncaughtException]!${JSON.stringify(error)}`, error.stack);
+      console.error(`[uncaughtException]!$ ${error.name} : ${error.message}`, error.stack);
 
       sendErrorWebHook(responseData);
     });
