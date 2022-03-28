@@ -17,6 +17,7 @@ import { Server, Socket } from 'socket.io';
   cors: {
     origin: '*',
   },
+  //https://socket.io/docs/v4/using-multiple-nodes/#enabling-sticky-session
   transports: ['websocket'],
 })
 export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
