@@ -1,28 +1,41 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, WsResponse } from '@nestjs/websockets';
+import {
+  ConnectedSocket,
+  MessageBody,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  OnGatewayInit,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  WsResponse,
+} from '@nestjs/websockets';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
-export class EventGateway {
+export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('events')
-  findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-    console.log('events');
-    console.dir(data);
-    return from([1, 2, 3]).pipe(map((item) => ({ event: 'events', data: item })));
+  afterInit(server: Server) {
+    console.log('Init');
   }
 
-  @SubscribeMessage('identity')
-  async identity(@MessageBody() data: number): Promise<number> {
-    console.log('identity');
-    console.dir(data);
-    return data;
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    console.log(`Client Disconnected : ${client.id}`);
+  }
+
+  handleConnection(@ConnectedSocket() client: Socket, ...args: any[]) {
+    console.log(`Client Connected : ${client.id}`);
+  }
+  @SubscribeMessage('events')
+  findAll(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Observable<WsResponse<number>> {
+    console.log(socket.id);
+    return from([1, 2, 3]).pipe(map((item) => ({ event: 'events', data: item })));
   }
 }

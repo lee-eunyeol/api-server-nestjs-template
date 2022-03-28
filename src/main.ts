@@ -15,12 +15,14 @@ import { BaseResponseDto } from '@common/response-helper/base-response.dto';
 import { LoggingInterceptor } from '@common/interceptors/logging.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { ConfigShared } from './shared/services/config.shared';
+import { RedisIoAdapter } from './websocket-events/redis-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  console.log('here');
   setupPm2(app);
   setupSeverEnvironment(app);
+  setupWebSocketRedisAdapter(app);
   setupValidationPipe(app);
   setupInterceptor(app);
   setupSwagger(app);
@@ -66,6 +68,12 @@ const setupSeverEnvironment = (app: NestExpressApplication) => {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(cookieParser());
+};
+
+const setupWebSocketRedisAdapter = async (app: NestExpressApplication) => {
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
 };
 
 const setupValidationPipe = (app: NestExpressApplication) => {
