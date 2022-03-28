@@ -17,6 +17,7 @@ import { Server, Socket } from 'socket.io';
   cors: {
     origin: '*',
   },
+  transports: ['websocket'],
 })
 export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
@@ -37,5 +38,7 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   findAll(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Observable<WsResponse<number>> {
     console.log(socket.id);
     return from([1, 2, 3]).pipe(map((item) => ({ event: 'events', data: item })));
+    // const event = 'events'; 동기적 emit
+    // return { event, data };
   }
 }
