@@ -14,13 +14,12 @@
     "start:dev-clustering": "pm2 start",
     "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "NODE_ENV=test jest --detectOpenHandles --force-exit",
     "test:db": "NODE_ENV=test ERR_LOGGING=true DB_LOGGING=true jest --detectOpenHandles --force-exit",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "NODE_ENV=test jest --config ./e2e-test/jest-e2e.json --detectOpenHandles --force-exit",
-    "test:unit": "NODE_ENV=test jest --config ./unit-test/jest-unit.json --detectOpenHandles --force-exit"
+    "test:e2e": "NODE_ENV=test jest --config ./test-e2e/jest-e2e.json --detectOpenHandles --force-exit",
+    "test:unit": "NODE_ENV=test jest --config ./test-unit/jest-unit.json --detectOpenHandles --force-exit"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -83,27 +82,5 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "unit-test",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "moduleNameMapper": {
-      "src/(.*)$": "<rootDir>/../src/$1",
-      "@common/(.*)$": "<rootDir>/../src/common/$1",
-      "@shared/(.*)$": "<rootDir>/../src/shared/services/$1"
-    },
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }
