@@ -19,13 +19,15 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "NODE_ENV=test jest --config ./e2e-test/jest-e2e.json --detectOpenHandles --force-exit",
+    "test:unit": "NODE_ENV=test jest --config ./unit-test/jest-unit.json --detectOpenHandles --force-exit"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^8.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/platform-socket.io": "^8.4.3",
@@ -88,7 +90,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "unit-test",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -99,9 +101,7 @@
     "moduleNameMapper": {
       "src/(.*)$": "<rootDir>/../src/$1",
       "@common/(.*)$": "<rootDir>/../src/common/$1",
-      "@entity/(.*)$": "<rootDir>/../src/entities/$1",
-      "@shared/(.*)$": "<rootDir>/../src/shared/services/$1",
-      "@repo/(.*)$": "<rootDir>/../src/repositories/$1"
+      "@shared/(.*)$": "<rootDir>/../src/shared/services/$1"
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
