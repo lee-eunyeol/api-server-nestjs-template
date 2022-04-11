@@ -19,10 +19,9 @@ import { RedisIoAdapter } from './websocket-events/redis-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  console.log('here');
   setupPm2(app);
   setupSeverEnvironment(app);
-  setupWebSocketRedisAdapter(app);
+  //setupWebSocketRedisAdapter(app);
   setupValidationPipe(app);
   setupInterceptor(app);
   setupSwagger(app);
