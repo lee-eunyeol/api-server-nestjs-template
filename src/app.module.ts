@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { EventModule } from './websocket-events/events.module';
 import { SharedModule } from './shared/shared.module';
+import { APP_FILTER } from '@nestjs/core';
+import { ExceptionsFilter } from './common/filters/exceptions.filter';
 
 @Module({
   imports: [
@@ -41,6 +43,12 @@ import { SharedModule } from './shared/shared.module';
     EventModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: ExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}
