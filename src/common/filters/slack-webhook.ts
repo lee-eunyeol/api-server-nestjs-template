@@ -1,14 +1,13 @@
 import * as superagent from 'superagent';
-import { BaseResponseDto } from '@common/response-helper/base-response.dto';
 
-export async function sendErrorWebHook(responseData: BaseResponseDto) {
+export async function sendErrorWebHook(error: Error, titleMessage?: string) {
   if (process.env.NODE_ENV !== 'production') return;
 
   const attachment = {
-    pretext: `⚠️ ${responseData.resultData}`,
+    pretext: `⚠️ ${error.name}`,
     color: '#FF0000',
-    text: responseData.errorMessage,
-    fields: [{ title: '에러 코드', value: responseData.errorCode, short: false }],
+    text: error.message,
+    fields: [{ title: titleMessage ?? 'STACK', value: error.stack, short: false }],
   };
   await superagent.post(process.env.SLACK_REMOTE_CHANNEL).send({ attachments: [attachment] });
 }

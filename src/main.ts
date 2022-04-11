@@ -7,11 +7,8 @@ import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import * as cors from 'cors';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { HttpStatus, ValidationPipe } from '@nestjs/common';
-import { ErrorHandler } from '@common/filters/error-handler';
-import { ERROR_CODE } from './common/enum/error.enum';
+import { HttpStatus, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { sendErrorWebHook } from '@common/filters/slack-webhook';
-import { BaseResponseDto } from '@common/response-helper/base-response.dto';
 import { LoggingInterceptor } from '@common/interceptors/logging.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { ConfigShared } from './shared/services/config.shared';
@@ -83,11 +80,7 @@ const setupValidationPipe = (app: NestExpressApplication) => {
       transform: true,
       // dismissDefaultMessages: true,//TODO 프로덕션 환경때에는 에러 메시지 안보이게 할지 고민하기
       exceptionFactory: (errors) => {
-        return new ErrorHandler(
-          ERROR_CODE.VALIDATION_FAIL_ERROR,
-          HttpStatus.UNPROCESSABLE_ENTITY,
-          JSON.stringify(errors).replace(/\\/gi, '')
-        );
+        return new UnprocessableEntityException(errors, 'ValidationError');
       },
     })
   );
@@ -96,25 +89,12 @@ const setupValidationPipe = (app: NestExpressApplication) => {
 const handleUnexpectedError = () => {
   process
     .on('unhandledRejection', (reason: Error) => {
-      const responseData: BaseResponseDto = new BaseResponseDto();
-      responseData.result = false;
-      responseData.resultData = 'unhandledRejection';
-      responseData.errorCode = ERROR_CODE.SERVER_ERROR;
-      responseData.errorMessage = `[Unhandled Rejection at Promise]! ${reason.name} : ${reason.message}`;
       console.error(`[Unhandled Rejection at Promise]! ${reason.name} : ${reason.message}`, reason.stack);
-
-      sendErrorWebHook(responseData);
+      sendErrorWebHook(reason);
     })
     .on('uncaughtException', (error: Error) => {
-      const responseData: BaseResponseDto = new BaseResponseDto();
-      responseData.result = false;
-      responseData.resultData = error.message;
-      responseData.errorCode = ERROR_CODE.SERVER_ERROR;
-      responseData.errorMessage = `[uncaughtException]!$ ${error.name} : ${error.message}`;
-
       console.error(`[uncaughtException]!$ ${error.name} : ${error.message}`, error.stack);
-
-      sendErrorWebHook(responseData);
+      sendErrorWebHook(error);
     });
 };
 

@@ -1,12 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseResponseDto } from './base-response.dto';
 
-export class StringResponseDto extends BaseResponseDto {
+export class StringResponseDto {
   @ApiProperty({ description: '' })
   resultData: string;
 
   constructor(string: string) {
-    super();
     this.resultData = string;
   }
 }

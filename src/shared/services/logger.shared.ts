@@ -6,8 +6,6 @@ import { Request } from 'express';
 import * as _ from 'lodash';
 import { REQUEST_TYPE } from '@common/enum/type.enum';
 
-import { BaseResponseDto } from '@common/response-helper/base-response.dto';
-
 const { errors, combine, json, timestamp, ms, prettyPrint } = winston.format;
 
 const canLogging =
@@ -64,7 +62,7 @@ export class LoggerShared implements LS {
     });
   }
 
-  fileLog(req: Request, type: REQUEST_TYPE, responseData?: BaseResponseDto) {
+  fileLog(req: Request, type: REQUEST_TYPE, responseData?: any) {
     if (!isProduction) {
       const authorization = !_.isEmpty(req.headers.authorization) ? req.headers.authorization : null;
       const query = !_.isEmpty(req.query) ? req.query : null;

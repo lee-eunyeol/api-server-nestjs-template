@@ -1,5 +1,4 @@
-import { ERROR_CODE } from '@common/enum/error.enum';
-import { ErrorHandler } from '@common/filters/error-handler';
+import { UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 export class RefreshGuard extends AuthGuard('jwt-refresh') {
@@ -9,7 +8,7 @@ export class RefreshGuard extends AuthGuard('jwt-refresh') {
   handleRequest(err, user, info, status) {
     if (err || !user) {
       const error = info as Error;
-      throw new ErrorHandler(ERROR_CODE.UNAUTHORIZED, 401, `${error.stack}`);
+      throw new UnauthorizedException(`refreshToken이없거나 잘못되었습니다.${error.stack}`);
     }
     return user;
   }

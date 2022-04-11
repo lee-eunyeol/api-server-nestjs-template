@@ -1,10 +1,8 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, HttpStatus } from '@nestjs/common';
-import { ErrorHandler } from '@common/filters/error-handler';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigShared } from '@shared/config.shared';
-import { ERROR_CODE } from '@common/enum/error.enum';
 // import { jwtConstants } from './constants';
 
 @Injectable()
@@ -22,7 +20,7 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
       const refreshToken = req.body.refreshToken;
       return { payload, refreshToken };
     } catch (error) {
-      throw new ErrorHandler(ERROR_CODE.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, '리프레시 토큰이 없습니다.');
+      throw new UnauthorizedException(`refreshToken이없거나 잘못되었습니다.${error.stack}`);
     }
   }
 }
