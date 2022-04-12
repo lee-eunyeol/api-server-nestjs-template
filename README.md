@@ -6,6 +6,19 @@
 $ npm install
 ```
 
+## env 파일 세팅
+```bash
+# .env.development , .env.production , .env.test 세 파일 생성 
+#-> 상황에 따라 아래 환경변수 수정하기
+PORT=3000
+REDIS_URL=redis://default:@localhost:6379
+JWT_SECRET_ACCESS=access_token
+JWT_SECRET_REFRESH=refresh_token
+JWT_ACCESS_TOKEN_EXPIRE_DATE=30m
+JWT_REFRESH_TOKEN_EXPIRE_DATE=60m
+JWT_ISS=https://test-jwt.com
+
+```
 ## 시작
 
 ```bash
@@ -20,10 +33,10 @@ $ npm run start:prod
 
 ```bash
 # e2e 테스트
-$ npm run test
+$ npm run test:e2e
 
-# e2e 테스트 (상세 로그 확인)
-$ npm run test:db
+# unit 테스트
+$ npm run test:unit
 
 # CI/CD 환경에서의 테스트
 $ npm run test:ci
