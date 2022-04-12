@@ -13,12 +13,8 @@ export class ConfigShared {
     PORT: this.getString('PORT'),
   };
 
-  SESSION = {
-    SECRET_KEY: this.getString('SESSION_SECRET_KEY'),
-  };
-
   JWT = {
-    ACCESS_TOKEN_SECRET: this.getString('JWT_SECRET'),
+    ACCESS_TOKEN_SECRET: this.getString('JWT_SECRET_ACCESS'),
     REFRESH_TOKEN_SECRET: this.getString('JWT_SECRET_REFRESH'),
     ACCESS_TOKEN_EXPIRE_DATE: this.getString('JWT_ACCESS_TOKEN_EXPIRE_DATE'),
     REFRESH_TOKEN_EXPIRE_DATE: this.getString('JWT_REFRESH_TOKEN_EXPIRE_DATE'),
