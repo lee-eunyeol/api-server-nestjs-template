@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './setup-swagger';
-import * as session from 'express-session';
 import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -47,22 +46,22 @@ const setupSeverEnvironment = (app: NestExpressApplication) => {
 
   // const redisClient = createClient({ url: config.REDIS.URL, legacyMode: true });
   // redisClient.connect().catch((error: Error) => console.error(error));
-  const config = app.select(SharedModule).get(ConfigShared);
-  const sessionOption: session.SessionOptions = {
-    // store: new (RedisStore(session))({
-    //   client: redisClient,
-    //   logErrors: true,
-    // }),
-    resave: false,
-    saveUninitialized: true,
-    secret: config.SESSION.SECRET_KEY,
-    rolling: true, //새로고침이나 페이지 이동같이 다른 api를 새로 호출하면 기존의 세션만료시간을 갱신
-    cookie: { maxAge: 12 * 60 * 60 * 1000, httpOnly: true }, //세션 12시간 //secure : true -> 프로덕션시 붙이기 -> https환경에서만 세션을 사용할 수 있도록 허용
-  };
+  // const config = app.select(SharedModule).get(ConfigShared);
+  // const sessionOption: session.SessionOptions = {
+  //   store: new (RedisStore(session))({
+  //     client: redisClient,
+  //     logErrors: true,
+  //   }),
+  //   resave: false,
+  //   saveUninitialized: true,
+  //   secret: config.SESSION.SECRET_KEY,
+  //   rolling: true, //새로고침이나 페이지 이동같이 다른 api를 새로 호출하면 기존의 세션만료시간을 갱신
+  //   cookie: { maxAge: 12 * 60 * 60 * 1000, httpOnly: true }, //세션 12시간 //secure : true -> 프로덕션시 붙이기 -> https환경에서만 세션을 사용할 수 있도록 허용
+  // };
 
-  app.use(session(sessionOption));
+  // app.use(session(sessionOption));
   app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(passport.session());
   app.use(cookieParser());
 };
 
