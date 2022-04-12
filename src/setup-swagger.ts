@@ -9,7 +9,7 @@ export function setupSwagger(app: INestApplication): void {
     .setTitle('Nest API')
     .setDescription('관리자 api documentation 입니다.')
     .setVersion('1.0')
-    //.addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

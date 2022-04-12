@@ -13,7 +13,6 @@ export class TokenService {
       {
         iat: Math.ceil(new Date().getTime() / 1000),
         userIdx: user.userIdx,
-        userType: user.userType,
         tokenType: JWT_TOKEN_TYPE.ACCESS_TOKEN,
       },
       {
@@ -101,7 +100,7 @@ export class TokenService {
   //   return new TokenDataResponseDto(await this.getTokens(userInfo, refreshTokenData.payload.uuid, userIp));
   // }
 
-  async getTokens(user: any, uuid: string, ip: string): Promise<TokenDto> {
+  async generateTokens(user: any, uuid: string, ip: string): Promise<TokenDto> {
     const [accessToken, refreshToken] = await Promise.all([
       this.generateAccessToken(user),
       this.generateRefreshToken(user, uuid, ip),

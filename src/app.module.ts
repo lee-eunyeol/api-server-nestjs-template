@@ -6,6 +6,7 @@ import { EventModule } from './websocket-events/events.module';
 import { SharedModule } from './shared/shared.module';
 import { APP_FILTER } from '@nestjs/core';
 import { ExceptionsFilter } from './common/filters/exceptions.filter';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ExceptionsFilter } from './common/filters/exceptions.filter';
     // }),
     SharedModule,
     EventModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
