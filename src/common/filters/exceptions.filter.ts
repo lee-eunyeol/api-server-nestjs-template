@@ -47,6 +47,8 @@ export class ExceptionsFilter implements ExceptionFilter {
       if (!sendLog) error.message = '';
       this.logger.fileLog(request, REQUEST_TYPE.RESPONSE, error);
     }
-    response.status(httpStatusCode).json({ status: httpStatusCode, message: error.message, name: error.name });
+    response
+      .status(httpStatusCode)
+      .json({ status: httpStatusCode, message: `${error.message} ${error.stack}`, name: error.name });
   }
 }
